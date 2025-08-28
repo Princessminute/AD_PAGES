@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Registro</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css" />
+
+</head>
+<body>
+  <main class="shell">
+    <section class="card">
+      <header class="card__header">
+        <h1 class="card__title">Crear cuenta</h1>
+        <p class="card__subtitle">Completa los campos. Los marcados con * son obligatorios.</p>
+      </header>
+
+      <form id="registerForm" class="form" novalidate>
+        <!-- Nombre :) -->
+        <div class="field">
+          <label for="nombre" class="label">Nombre *</label>
+          <input id="nombre" name="nombre" class="input" type="text" placeholder="María" required minlength="2" maxlength="40" />
+          <small class="msg" id="msg-nombre" aria-live="polite"></small>
+        </div>
+
+        <!-- Apellido :)-->
+        <div class="field">
+          <label for="apellido" class="label">Apellido *</label>
+          <input id="apellido" name="apellido" class="input" type="text" placeholder="Rodríguez" required minlength="2" maxlength="40" />
+          <small class="msg" id="msg-apellido" aria-live="polite"></small>
+        </div>
+
+        <!-- Usuario -->
+        <div class="field">
+          <label for="usuario" class="label">Usuario *</label>
+          <input id="usuario" name="usuario" class="input" type="text" placeholder="usuario_23" required minlength="3" maxlength="16" 
+            pattern="^[A-Za-z0-9_]{3,16}$" title="Usa 3–16 caracteres: letras, números o guion bajo." />
+          <small class="msg" id="msg-usuario" aria-live="polite"></small>
+        </div>
+
+        <!-- Correo -->
+        <div class="field">
+          <label for="email" class="label">Correo electrónico *</label>
+          <input id="email" name="email" class="input" type="email" placeholder="correo@hotmail.com" required maxlength="80" />
+          <small class="msg" id="msg-email" aria-live="polite"></small>
+        </div>
+
+        <!-- Teléfono -->
+        <div class="field">
+          <label for="telefono" class="label">Teléfono (opcional)</label>
+          <input id="telefono" name="telefono" class="input" type="tel" placeholder="999-999-999" 
+            pattern="^\+?[0-9\-\s]{7,20}$" 
+            title="Solo números, espacios o guiones; puedes iniciar con +." />
+          <small class="msg" id="msg-telefono" aria-live="polite"></small>
+        </div>
+
+        <!-- País -->
+        <div class="field">
+          <label for="pais" class="label">País *</label>
+          <select id="pais" name="pais" class="input select" required>
+            <option value="" selected disabled>Selecciona tu país</option>
+            <option value="PE">Perú</option>
+            <option value="MX">México</option>
+            <option value="CO">Colombia</option>
+            <option value="AR">Argentina</option>
+            <option value="CL">Chile</option>
+            <option value="ES">España</option>
+            <option value="US">Estados Unidos</option>
+            <option value="OT">Otro</option>
+          </select>
+          <small class="msg" id="msg-pais" aria-live="polite"></small>
+        </div>
+
+        <!-- Fecha de nacimiento -->
+        <div class="field">
+          <label for="nacimiento" class="label">Fecha de nacimiento *</label>
+          <input id="nacimiento" name="nacimiento" class="input" type="date" required />
+          <small class="msg" id="msg-nacimiento" aria-live="polite"></small>
+        </div>
+
+        <!-- Contraseña -->
+        <div class="field">
+          <label for="password" class="label">Contraseña *</label>
+          <input id="password" name="password" class="input" type="password" required minlength="8" maxlength="64" 
+            pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,64}$"
+            title="Mínimo 8 caracteres e incluye mayúscula, minúscula, número y símbolo." />
+          <small class="msg" id="msg-password" aria-live="polite"></small>
+        </div>
+
+        <!-- Confirmar contraseña -->
+        <div class="field">
+          <label for="confirm" class="label">Confirmar contraseña *</label>
+          <input id="confirm" name="confirm" class="input" type="password" required minlength="8" maxlength="64" />
+          <small class="msg" id="msg-confirm" aria-live="polite"></small>
+        </div>
+
+        <!-- Términos -->
+        <div class="field checkbox">
+          <label>
+            <input id="terminos" name="terminos" type="checkbox" required />
+            Acepto los términos y condiciones *
+          </label>
+          <small class="msg" id="msg-terminos" aria-live="polite"></small>
+        </div>
+
+        <!-- Botón -->
+        <div class="actions">
+          <button type="submit" id="submitBtn" class="btn" disabled>Registrar</button>
+        </div>
+      </form>
+    </section>
+  </main>
+
+  <script>
+  (function(){
+    const form = document.getElementById('registerForm');
+    const submitBtn = document.getElementById('submitBtn');
+
+    const fields = {
+  nombre: { 
+    el: document.getElementById("nombre"), 
+    msg: document.getElementById("msg-nombre"), 
+    messages: {
+      valueMissing: 'Por favor, escribe tu nombre.',
+      tooShort: 'El nombre es muy corto (mínimo 2).',
+      tooLong: 'El nombre es muy largo (máximo 40).'
+    }
+  },
+  apellido: { 
+    el: document.getElementById("apellido"), 
+    msg: document.getElementById("msg-apellido"), 
+    messages: {
+      valueMissing: 'Por favor, escribe tu apellido.',
+      tooShort: 'El apellido es muy corto (mínimo 2).',
+      tooLong: 'El apellido es muy largo (máximo 40).'
+    }
+  },
+  usuario: { 
+    el: document.getElementById("usuario"), 
+    msg: document.getElementById("msg-usuario"), 
+    messages: {
+      valueMissing: 'Elige un nombre de usuario.',
+      patternMismatch: 'Usa 3–16 caracteres: letras, números o _ .',
+      tooShort: 'El usuario es muy corto (mínimo 3).',
+      tooLong: 'El usuario es muy largo (máximo 16).'
+    }
+  },
+  email: {
+    el: document.getElementById("email"),
+    msg: document.getElementById("msg-email"),
+    messages: {
+      valueMissing: 'Por favor, ingresa tu correo electrónico.',
+      typeMismatch: 'El formato del correo no es válido.',
+      tooLong: 'El correo es demasiado largo (máximo 80).'
+    }
+  },
+  telefono: {
+    el: document.getElementById("telefono"),
+    msg: document.getElementById("msg-telefono"),
+    messages: {
+      patternMismatch: 'El teléfono debe contener solo números, espacios o guiones.',
+      tooShort: 'El teléfono es muy corto (mínimo 7).',
+      tooLong: 'El teléfono es muy largo (máximo 20).'
+    }
+  },
+  pais: {
+    el: document.getElementById("pais"),
+    msg: document.getElementById("msg-pais"),
+    messages: {
+      valueMissing: 'Por favor, selecciona tu país.'
+    }
+  },
+  nacimiento: {
+    el: document.getElementById("nacimiento"),
+    msg: document.getElementById("msg-nacimiento"),
+    messages: {
+      valueMissing: 'Por favor, selecciona tu fecha de nacimiento.',
+      customError: 'Debes tener al menos 13 años.'
+    }
+  },
+  password: {
+    el: document.getElementById("password"),
+    msg: document.getElementById("msg-password"),
+    messages: {
+      valueMissing: 'Por favor, escribe una contraseña.',
+      tooShort: 'La contraseña es muy corta (mínimo 8).',
+      tooLong: 'La contraseña es muy larga (máximo 64).',
+      patternMismatch: 'Debe incluir mayúscula, minúscula, número y símbolo.'
+    }
+  },
+  confirm: {
+    el: document.getElementById("confirm"),
+    msg: document.getElementById("msg-confirm"),
+    messages: {
+      valueMissing: 'Por favor, confirma tu contraseña.',
+      customError: 'Las contraseñas no coinciden.'
+    }
+  },
+  terminos: {
+    el: document.getElementById("terminos"),
+    msg: document.getElementById("msg-terminos"),
+    messages: {
+      valueMissing: 'Debes aceptar los términos y condiciones.'
+    }
+  }
+};
+
+
+
+    (function setDateBounds(){
+  const n = fields.nacimiento.el;   // campo "fecha de nacimiento"
+  const today = new Date();         // fecha actual
+  const min = new Date(1900,0,1);   // fecha mínima permitida (01/01/1900)
+  const max = new Date(today.getFullYear()-13, today.getMonth(), today.getDate()); // fecha máxima = hoy - 13 años
+
+  // límites al input
+  n.min = min.toISOString().slice(0,10); // "1900-01-01"
+  n.max = max.toISOString().slice(0,10); // ej. "2012-08-28"
+  })();
+
+    function checkConfirm(){
+    const pass = fields.password.el.value;
+    const conf = fields.confirm.el.value;
+    if (!conf) return; // si confirmación está vacía, no hace nada
+
+    if (conf !== pass){
+      fields.confirm.el.setCustomValidity('Las contraseñas no coinciden.');
+    } else {
+      fields.confirm.el.setCustomValidity('');
+    }
+  }
+
+
+    function showMessage(key){
+    const { el, msg, messages } = fields[key];
+    let text = '';
+
+    // marca el campo como válido/ inválido para accesibilidad (aria-invalid)
+    el.setAttribute('aria-invalid', !el.checkValidity());
+
+    // Verifica qué tipo de error tiene el input
+    if (el.validity.valueMissing && messages.valueMissing) text = messages.valueMissing;
+    else if (el.validity.typeMismatch && messages.typeMismatch) text = messages.typeMismatch;
+    else if (el.validity.tooShort && messages.tooShort) text = messages.tooShort;
+    else if (el.validity.tooLong && messages.tooLong) text = messages.tooLong;
+    else if (el.validity.patternMismatch && messages.patternMismatch) text = messages.patternMismatch;
+    else if (el.validity.customError) text = el.validationMessage;
+
+    // Muestra mensaje en el <small>
+    msg.textContent = text;
+    msg.className = 'msg' + (text ? ' error' : ' ok');
+
+    // Marca input como válido (verde) si no hay errores
+    if (!text && el.value) {
+      el.classList.add('valid');
+    } else {
+      el.classList.remove('valid');
+    }
+  }
+
+
+    Object.keys(fields).forEach((key)=>{
+      const { el } = fields[key];
+      el.addEventListener('input', ()=>{
+        if (key==='confirm' || key==='password') checkConfirm();
+        showMessage(key);
+        submitBtn.disabled = !form.checkValidity();
+      });
+      el.addEventListener('invalid',(e)=>{
+        e.preventDefault();
+        if (key==='confirm' || key==='password') checkConfirm();
+        showMessage(key);
+        submitBtn.disabled = !form.checkValidity();
+      },true);
+    });
+
+    form.addEventListener('submit',(e)=>{
+      e.preventDefault();
+      if (!form.checkValidity()){
+        Object.keys(fields).forEach(showMessage);
+        submitBtn.disabled = true;
+        return;
+      }
+      const data = Object.fromEntries(new FormData(form).entries());
+      alert(`¡Registro exitoso!\nBienvenida/o, ${data.nombre}.`);
+      form.reset();
+      submitBtn.disabled = true;
+      Object.keys(fields).forEach((k)=>{
+        fields[k].msg.textContent='';
+        fields[k].msg.className='msg';
+        fields[k].el.classList.remove('valid');
+        fields[k].el.setAttribute('aria-invalid','false');
+      });
+    });
+  })();
+  </script>
+</body>
+</html>
